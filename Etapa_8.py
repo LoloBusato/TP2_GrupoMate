@@ -2,25 +2,16 @@ import csv
 #-------------------------------------------------------------------------------------------------------------------
 import chardet
 #esta funcion la tuve que crear para resolver un problema que me saltaba en consola.
-#si no es necesaria pueden probarlo solamente elimando:
-#-ecoding_palabras,encoding_definiciones y sus respectivos encoding en los open.
+#esta en desuso igual, lo que esta en uso es la constante ENCODING
+#la funcion encoding esta en cada open de archivos (hay 3) = ENCODING
 def detectar_encoding(archivo):
     with open(archivo, 'rb') as f:
         resultado = chardet.detect(f.read())
     return resultado['encoding']
-encoding_palabras = detectar_encoding('palabras.txt')
-encoding_definiciones = detectar_encoding('definiciones.txt')
-#encoding_dicc = detectar_encoding('diccionario.csv') 
+
+ENCODING='utf-8'
+
 #-------------------------------------------------------------------------------------------------------------------
-
-#ABRIMOS LOS ARCHIVOS.TXT
-palabras_txt = open('palabras.txt', 'r', encoding=encoding_palabras)
-definiciones_txt = open('definiciones.txt', 'r', encoding=encoding_definiciones)
-
-#GENERO VARIABLES Y CONSTANTES QUE VOY A USAR
-count_pal=0
-count_def=0
-PALABRA=0
 
 #LEE LOS ARCHIVOS.TXT LINEA POR LINEA
 def leer_pal(palabras,indice_pal):
@@ -55,15 +46,26 @@ def crear_diccionario(palabras,definiciones):
     dicc=sorted(dicc.items(),key=lambda x:x[PALABRA])
     return dicc
 
-#CREO EL ARCHIVO DICCIONARIO.CSV
+#ABRIMOS LOS ARCHIVOS.TXT--------------------------------------------------------------------------------------------
+palabras_txt = open('palabras.txt', 'r', encoding=ENCODING)
+definiciones_txt = open('definiciones.txt', 'r', encoding=ENCODING)
+#----------------------------------------------------------------------------------------------------------------
+#GENERO VARIABLES Y CONSTANTES QUE VOY A USAR
+count_pal=0
+count_def=0
+PALABRA=0
 palabras_definiciones = crear_diccionario(palabras_txt,definiciones_txt)
+#------------------------------------------------------------------------------------------------------------------------
+
+#CREO EL ARCHIVO DICCIONARIO.CSV
 def crear_diccionario_csv(palabras_definiciones):
     diccionario_csv = 'diccionario.csv'
     #escribir los datos en el archivo CSV
-    with open(diccionario_csv, 'w', newline='',encoding='utf-8') as dicc_csv:
+    with open(diccionario_csv, 'w', newline='',encoding=ENCODING) as dicc_csv:
         escritor = csv.writer(dicc_csv)
         escritor.writerows(palabras_definiciones)
     return diccionario_csv
 
 crear_diccionario_csv(palabras_definiciones)
+
 
