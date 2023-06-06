@@ -38,8 +38,20 @@ def crear_diccionario_csv(palabras,definiciones):
         escritor = csv.writer(dicc_csv)
         escritor.writerows(palabras_definiciones)
 
-def leer_diccionario(diccionario_txt):
-     print(diccionario_txt)
+def leer_archivo_diccionario(diccionario_txt):
+    linea=diccionario_txt.readline().rstrip()
+    return linea.split(',') if linea else ('','')
+
+def leer_diccionario(diccionario_csv):
+    diccionario_lista = []
+    palabra_definicion = leer_archivo_diccionario(diccionario_csv)
+    while palabra_definicion != ('', ''):
+        while len(palabra_definicion) > 2:
+            palabra_definicion[-2:] = [palabra_definicion[-2] + "," + palabra_definicion[-1]]
+        diccionario_lista.append(palabra_definicion)
+        palabra_definicion = leer_archivo_diccionario(diccionario_csv)
+    return diccionario_lista
+    
 
 def obtener_lista_definiciones():
     #ABRIMOS LOS ARCHIVOS.TXT--------------------------------------------------------------------------------------------
@@ -49,13 +61,11 @@ def obtener_lista_definiciones():
     #CIERRO LOS ARCHIVOS TXT--------------------------------------------------------------------------------------------
     palabras_txt.close()
     definiciones_txt.close()
-    diccionario_txt = open('diccionario.csv', 'r', encoding=ENCODING)
-    diccionario_lista = leer_diccionario(diccionario_txt)
-    diccionario_txt.close()
-
+    diccionario_csv = open('diccionario.csv', 'r', encoding=ENCODING)
+    diccionario_lista = leer_diccionario(diccionario_csv)
+    diccionario_csv.close()
     random.shuffle(diccionario_lista)
     return diccionario_lista
-
 
 
 
