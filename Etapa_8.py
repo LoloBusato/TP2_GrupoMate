@@ -1,14 +1,9 @@
 import csv
-#-------------------------------------------------------------------------------------------------------------------
-import chardet
-#esta funcion la tuve que crear para resolver un problema que me saltaba en consola.
-#esta en desuso igual, lo que esta en uso es la constante ENCODING
-#la funcion encoding esta en cada open de archivos (hay 3) = ENCODING
-def detectar_encoding(archivo):
-    with open(archivo, 'rb') as formato:
-        resultado = chardet.detect(formato.read())
-    return resultado['encoding']
 
+#----------------------------------------------------------------------------------------------------------------
+#GENERO VARIABLES Y CONSTANTES QUE VOY A USAR
+PALABRA=0
+MINIMO=4
 ENCODING='utf-8'
 
 #-------------------------------------------------------------------------------------------------------------------
@@ -35,10 +30,7 @@ def crear_diccionario(palabras,definiciones):
 #ABRIMOS LOS ARCHIVOS.TXT--------------------------------------------------------------------------------------------
 palabras_txt = open('palabras.txt', 'r', encoding=ENCODING)
 definiciones_txt = open('definiciones.txt', 'r', encoding=ENCODING)
-#----------------------------------------------------------------------------------------------------------------
-#GENERO VARIABLES Y CONSTANTES QUE VOY A USAR
-PALABRA=0
-MINIMO=4
+
 #------------------------------------------------------------------------------------------------------------------------
 
 #CREO EL ARCHIVO DICCIONARIO.CSV
