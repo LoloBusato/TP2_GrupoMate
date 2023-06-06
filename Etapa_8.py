@@ -26,11 +26,6 @@ def crear_diccionario(palabras,definiciones):
     dicc=sorted(dicc.items(),key=lambda x:x[PALABRA])
     return dicc
 
-
-#ABRIMOS LOS ARCHIVOS.TXT--------------------------------------------------------------------------------------------
-palabras_txt = open('palabras.txt', 'r', encoding=ENCODING)
-definiciones_txt = open('definiciones.txt', 'r', encoding=ENCODING)
-
 #------------------------------------------------------------------------------------------------------------------------
 
 #CREO EL ARCHIVO DICCIONARIO.CSV
@@ -41,13 +36,16 @@ def crear_diccionario_csv(palabras,definiciones):
     with open(diccionario_csv, 'w', newline='',encoding=ENCODING) as dicc_csv:
         escritor = csv.writer(dicc_csv)
         escritor.writerows(palabras_definiciones)
-    return diccionario_csv
 
-crear_diccionario_csv(palabras_txt,definiciones_txt)
 
-#CIERRO LOS ARCHIVOS TXT--------------------------------------------------------------------------------------------
-palabras_txt.close()
-definiciones_txt.close()
+def obtener_lista_definiciones():
+    #ABRIMOS LOS ARCHIVOS.TXT--------------------------------------------------------------------------------------------
+    palabras_txt = open('palabras.txt', 'r', encoding=ENCODING)
+    definiciones_txt = open('definiciones.txt', 'r', encoding=ENCODING)
+    crear_diccionario_csv(palabras_txt,definiciones_txt)
+    #CIERRO LOS ARCHIVOS TXT--------------------------------------------------------------------------------------------
+    palabras_txt.close()
+    definiciones_txt.close()
 
 
 
