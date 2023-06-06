@@ -5,8 +5,8 @@ import chardet
 #esta en desuso igual, lo que esta en uso es la constante ENCODING
 #la funcion encoding esta en cada open de archivos (hay 3) = ENCODING
 def detectar_encoding(archivo):
-    with open(archivo, 'rb') as f:
-        resultado = chardet.detect(f.read())
+    with open(archivo, 'rb') as formato:
+        resultado = chardet.detect(formato.read())
     return resultado['encoding']
 
 ENCODING='utf-8'
@@ -14,51 +14,36 @@ ENCODING='utf-8'
 #-------------------------------------------------------------------------------------------------------------------
 
 #LEE LOS ARCHIVOS.TXT LINEA POR LINEA
-def leer_pal(palabras,indice_pal):
-    linea_pal=palabras.readline().rstrip()
-    indice_pal+=1
-    return linea_pal,indice_pal 
-
-def leer_def(definiciones,indice_def):
+def leer_archivos(palabras,definiciones):
     linea_def=definiciones.readline().rstrip()
-    indice_def+=1
-    return linea_def,indice_def 
+    linea_pal=palabras.readline().rstrip()
+    return linea_pal,linea_def
 
 #CREACION DE NUESTRO DICC ORDENADO ALF.   TYPE: LIST
 def crear_diccionario(palabras,definiciones):
-    indice_pal=0
-    indice_def=0
     dicc={}
-    palabra,indice_pal=leer_pal(palabras,indice_pal)
-    definicion,indice_def =leer_def(definiciones,indice_def)
+    palabra,definicion=leer_archivos(palabras,definiciones)
     while palabra:
             #valido que la palabra sea alum.
-            if palabra.isalnum():
-                if indice_def==indice_pal:
-                    dicc[palabra]="'"+ str(definicion)+"'"
-                    definicion,indice_def =leer_def(definiciones,indice_def)
-                    palabra,indice_pal=leer_pal(palabras,indice_pal)
-                else:
-                    definicion,indice_def =leer_def(definiciones,indice_def)
-            else:
-                palabra,indice_pal=leer_pal(palabras,indice_pal)
-    
+            if palabra.isalnum() and len(palabra)>MINIMO:
+                dicc[palabra]="'"+str(definicion)+"'"
+            palabra,definicion=leer_archivos(palabras,definiciones)
     dicc=sorted(dicc.items(),key=lambda x:x[PALABRA])
     return dicc
+
 
 #ABRIMOS LOS ARCHIVOS.TXT--------------------------------------------------------------------------------------------
 palabras_txt = open('palabras.txt', 'r', encoding=ENCODING)
 definiciones_txt = open('definiciones.txt', 'r', encoding=ENCODING)
 #----------------------------------------------------------------------------------------------------------------
 #GENERO VARIABLES Y CONSTANTES QUE VOY A USAR
-count_pal=0
-count_def=0
 PALABRA=0
-palabras_definiciones = crear_diccionario(palabras_txt,definiciones_txt)
+MINIMO=4
 #------------------------------------------------------------------------------------------------------------------------
 
 #CREO EL ARCHIVO DICCIONARIO.CSV
-def crear_diccionario_csv(palabras_definiciones):
+def crear_diccionario_csv(palabras,definiciones):
+    palabras_definiciones=crear_diccionario(palabras,definiciones)
     diccionario_csv = 'diccionario.csv'
     #escribir los datos en el archivo CSV
     with open(diccionario_csv, 'w', newline='',encoding=ENCODING) as dicc_csv:
@@ -66,6 +51,12 @@ def crear_diccionario_csv(palabras_definiciones):
         escritor.writerows(palabras_definiciones)
     return diccionario_csv
 
-crear_diccionario_csv(palabras_definiciones)
+crear_diccionario_csv(palabras_txt,definiciones_txt)
+
+#CIERRO LOS ARCHIVOS TXT--------------------------------------------------------------------------------------------
+palabras_txt.close()
+definiciones_txt.close()
+
+
 
 
