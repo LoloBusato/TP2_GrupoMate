@@ -1,4 +1,5 @@
 import csv
+import random
 
 #----------------------------------------------------------------------------------------------------------------
 #GENERO VARIABLES Y CONSTANTES QUE VOY A USAR
@@ -37,6 +38,8 @@ def crear_diccionario_csv(palabras,definiciones):
         escritor = csv.writer(dicc_csv)
         escritor.writerows(palabras_definiciones)
 
+def leer_diccionario(diccionario_txt):
+     print(diccionario_txt)
 
 def obtener_lista_definiciones():
     #ABRIMOS LOS ARCHIVOS.TXT--------------------------------------------------------------------------------------------
@@ -46,6 +49,12 @@ def obtener_lista_definiciones():
     #CIERRO LOS ARCHIVOS TXT--------------------------------------------------------------------------------------------
     palabras_txt.close()
     definiciones_txt.close()
+    diccionario_txt = open('diccionario.csv', 'r', encoding=ENCODING)
+    diccionario_lista = leer_diccionario(diccionario_txt)
+    diccionario_txt.close()
+
+    random.shuffle(diccionario_lista)
+    return diccionario_lista
 
 
 
