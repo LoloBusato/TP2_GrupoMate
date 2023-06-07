@@ -31,10 +31,6 @@ def crear_diccionario(palabras,definiciones):
     dicc=sorted(dicc.items(),key=lambda x:x[PALABRA])
     return dicc
 
-
-#ABRIMOS LOS ARCHIVOS.TXT--------------------------------------------------------------------------------------------
-palabras_txt = open('palabras.txt', 'r', encoding=ENCODING)
-definiciones_txt = open('definiciones.txt', 'r', encoding=ENCODING)
 #----------------------------------------------------------------------------------------------------------------
 #GENERO VARIABLES Y CONSTANTES QUE VOY A USAR
 PALABRA=0
@@ -42,21 +38,18 @@ MINIMO=4
 #------------------------------------------------------------------------------------------------------------------------
 
 #CREO EL ARCHIVO DICCIONARIO.CSV
-def crear_diccionario_csv(palabras,definiciones):
+def crear_diccionario_csv(nombre_archivo_pal,nombre_archivo_def):
+    palabras = open(nombre_archivo_pal, 'r',encoding=ENCODING)
+    definiciones = open(nombre_archivo_def, 'r',encoding=ENCODING)
     palabras_definiciones=crear_diccionario(palabras,definiciones)
     diccionario_csv = 'diccionario.csv'
     #escribir los datos en el archivo CSV
     with open(diccionario_csv, 'w', newline='',encoding=ENCODING) as dicc_csv:
         escritor = csv.writer(dicc_csv)
         escritor.writerows(palabras_definiciones)
+    palabras.close()
+    definiciones.close()    
     return diccionario_csv
 
-crear_diccionario_csv(palabras_txt,definiciones_txt)
-
-#CIERRO LOS ARCHIVOS TXT--------------------------------------------------------------------------------------------
-palabras_txt.close()
-definiciones_txt.close()
-
-
-
+crear_diccionario_csv("palabras.txt","definiciones.txt")
 
