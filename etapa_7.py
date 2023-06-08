@@ -1,8 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
 import csv
-#no reconoce el usuarios.csv si esta en la misma carpeta, la reconoce dentro de prog nomas
-#tengo que hacer que queden guardados los datos
 raiz= Tk()
 
 #CONSTANTES
@@ -155,5 +153,3 @@ registrarse_boton= Button(raiz,text= 'Registrarse',command= lambda: registrarse(
 registrarse_boton.place(x=156, y=180)
 
 raiz.mainloop()
-
-#print (jugadores)
