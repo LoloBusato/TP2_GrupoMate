@@ -1,4 +1,3 @@
-import csv
 #-------------------------------------------------------------------------------------------------------------------
 import chardet
 #esta funcion la tuve que crear para resolver un problema que me saltaba en consola.
@@ -6,7 +5,7 @@ import chardet
 #la funcion encoding esta en cada open de archivos (hay 3) = ENCODING
 def detectar_encoding(archivo):
     with open(archivo, 'rb') as formato:
-        resultado = chardet.detect(formato.read())
+       resultado = chardet.detect(formato.read())
     return resultado['encoding']
 
 ENCODING='utf-8'
@@ -31,6 +30,10 @@ def crear_diccionario(palabras,definiciones):
     dicc=sorted(dicc.items(),key=lambda x:x[PALABRA])
     return dicc
 
+#ESCRIBIR DICC
+def escribir_dicc(dicc,linea):
+    linea_str=','.join(linea) + '\n'
+    dicc.write(linea_str)
 #----------------------------------------------------------------------------------------------------------------
 #GENERO VARIABLES Y CONSTANTES QUE VOY A USAR
 PALABRA=0
@@ -42,14 +45,11 @@ def crear_diccionario_csv(nombre_archivo_pal,nombre_archivo_def):
     palabras = open(nombre_archivo_pal, 'r',encoding=ENCODING)
     definiciones = open(nombre_archivo_def, 'r',encoding=ENCODING)
     palabras_definiciones=crear_diccionario(palabras,definiciones)
-    diccionario_csv = 'diccionario.csv'
-    #escribir los datos en el archivo CSV
-    with open(diccionario_csv, 'w', newline='',encoding=ENCODING) as dicc_csv:
-        escritor = csv.writer(dicc_csv)
-        escritor.writerows(palabras_definiciones)
+    diccionario_csv = open('diccionario.csv','w',encoding=ENCODING)
+    for linea in palabras_definiciones:
+        escribir_dicc(diccionario_csv,linea)
     palabras.close()
     definiciones.close()    
     return diccionario_csv
 
 crear_diccionario_csv("palabras.txt","definiciones.txt")
-
